@@ -1,5 +1,3 @@
-# pvrsex
-
 Author: Emmett Krupczak
 14 Jun 2017
 
