@@ -171,7 +171,7 @@ def wait_to_start(starttime):
         print("Wait time will be updated again at approximately "+str(starttime - dt.timedelta(seconds = 10))) 
         time.sleep(waittime-10) ## check 5 minutes before end of waittime 
         wait_to_start(starttime)
-    else:
+    elif waittime>0:
         time.sleep(waittime)
         
     
