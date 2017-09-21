@@ -152,7 +152,7 @@ def get_current_time_from_Streams():
 def wait_to_start(starttime):
     #update current time
     today = get_current_time_from_Streams()
-    print("\n Checking wait time.")
+    print("\nChecking wait time.")
     print("The current time from Streams is "+str(today))
     print("The current system time is "+str(dt.datetime.today()))
     #Check how far we are from start
@@ -180,7 +180,7 @@ def wait_to_start(starttime):
 if __name__ == "__main__":
     
     today = get_current_time_from_Streams()
-    starttime = dt.datetime(2017, 9, 21, 17, 33, 0)
+    starttime = dt.datetime(2017, 9, 21, 17, 40, 0)
 #    stoptime = dt.datetime(2017, 8, 30, 10, 50,0)
 
 
@@ -212,7 +212,7 @@ if __name__ == "__main__":
     ### For sub-minute runs, this will jump the gun. (if, eg, the run starts at 15:00:00 and ends at 15:00:34, this check will show that current time rounded to a minute still equals 15:00:00 and it restarts)
     current = get_current_time_from_Streams()
 #    print("entering loop", current)
-    print("Preparing to record at "+str(current))
+    print("\nPreparing to record at "+str(current))
     while starttime <= current <= stoptime:
 #        print(current, dt.datetime.today())
         now = dt.datetime.combine(current, dt.time(current.hour, current.minute))
