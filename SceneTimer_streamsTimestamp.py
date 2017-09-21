@@ -6,6 +6,8 @@ Created on Tue Aug 29 10:09:14 2017
 
 Have Streams7 record from all devices, starting a new scene every n seconds. 
 
+If the wait before recording is greater than 1 hr, recalibrate the pause at 30 min and 5 min before the start time.
+
 """
 
 import SPython
