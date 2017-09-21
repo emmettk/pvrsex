@@ -163,13 +163,13 @@ def wait_to_start(starttime):
         elif waittime > 3600:
             print("Waiting "+str(waittime/3600)+" hr to start")
         else: print("Waiting "+str(waittime)+" sec to start")
-    if waittime> 60*2: ## an hour
-        print("Wait time will be updated again at approximately "+str(starttime-dt.timedelta(seconds = 60)))
-        time.sleep(waittime - 60) ## check 30 minutes before end of wait time
+    if waittime>= 60*60: ## an hour
+        print("Wait time will be updated again at approximately "+str(starttime-dt.timedelta(seconds = 60*30)))
+        time.sleep(waittime - 60*30) ## check 30 minutes before end of wait time
         wait_to_start(starttime)
-    elif waittime >  30: ## half an hour
-        print("Wait time will be updated again at approximately "+str(starttime - dt.timedelta(seconds = 10))) 
-        time.sleep(waittime-10) ## check 5 minutes before end of waittime 
+    elif waittime >=  60*20: ## 20 min
+        print("Wait time will be updated again at approximately "+str(starttime - dt.timedelta(seconds = 60*5))) 
+        time.sleep(waittime-60*5) ## check 5 minutes before end of waittime 
         wait_to_start(starttime)
     elif waittime>0:
         time.sleep(waittime)
@@ -180,7 +180,7 @@ def wait_to_start(starttime):
 if __name__ == "__main__":
     
     today = get_current_time_from_Streams()
-    starttime = dt.datetime(2017, 9, 21, 17, 40, 0)
+    starttime = dt.datetime(2017, 9, 21, 17, 53, 0)
 #    stoptime = dt.datetime(2017, 8, 30, 10, 50,0)
 
 
