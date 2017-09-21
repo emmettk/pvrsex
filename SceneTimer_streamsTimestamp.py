@@ -149,6 +149,28 @@ def get_current_time_from_Streams():
     return dttime
     
 
+def wait_to_start(starttime):
+    #update current time
+    today = get_current_time_from_Streams()
+    #Check how far we are from start
+    waittime = (starttime-today).total_seconds()
+    if waittime>0:
+        if waittime > 60:
+            print("Waiting "+str(waittime/60)+" min to start")
+        elif waittime > 3600:
+            print("Waiting "+str(waittime/3600)+" hr to start")
+        else: print("Waiting "+str(waittime)+" sec to start")
+    if waittime> 60*30: ## half an hour
+        time.sleep(waittime - 60*5) ## check 5 minutes before end of wait time
+        wait_to_start(starttime)
+    if waittime >  60*60: ## an hour
+        time.sleep(waittime-60*30) ## check 30 minutes before end of waittime 
+        wait_to_start(starttime)
+    else:
+        time.sleep(waittime)
+        
+    
+
 
 if __name__ == "__main__":
     
@@ -171,16 +193,10 @@ if __name__ == "__main__":
     
     print("Start time: " + str(starttime))
     print("Stop time: "+ str(stoptime))
-    #update current time
-    today = get_current_time_from_Streams()
-    #Check how far we are from start
-    waittime = (starttime-today).total_seconds()
-    if waittime>0:
-        if waittime > 60:
-            print("Waiting "+str(waittime/60)+" min to start")
-        else: print("Waiting "+str(waittime)+" sec to start")
-        time.sleep(waittime)
-        
+    
+    #### Wait to start
+    wait_to_start(starttime)
+
 #    ##### Loop continuously    
 #    while starttime < dt.datetime.today() < stoptime:
 #        hScene = recordScene(vidDevList)
