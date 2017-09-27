@@ -6,6 +6,8 @@ Created on Tue Aug 29 10:09:14 2017
 
 Have Streams7 record from all devices, starting a new scene every n seconds. 
 
+If the wait before recording is greater than 1 hr, recalibrate the pause at 30 min and 5 min before the start time.
+
 """
 
 import SPython
@@ -147,17 +149,44 @@ def get_current_time_from_Streams():
     return dttime
     
 
+def wait_to_start(starttime):
+    #update current time
+    today = get_current_time_from_Streams()
+    print("\nChecking wait time.")
+    print("The current time from Streams is "+str(today))
+    print("The current system time is "+str(dt.datetime.today()))
+    #Check how far we are from start
+    waittime = (starttime-today).total_seconds()
+    if waittime>0:
+        if waittime > 60:
+            print("Waiting "+str(waittime/60)+" min to start")
+        elif waittime > 3600:
+            print("Waiting "+str(waittime/3600)+" hr to start")
+        else: print("Waiting "+str(waittime)+" sec to start")
+    if waittime>= 60*60: ## an hour
+        print("Wait time will be updated again at approximately "+str(starttime-dt.timedelta(seconds = 60*30)))
+        time.sleep(waittime - 60*30) ## check 30 minutes before end of wait time
+        wait_to_start(starttime)
+    elif waittime >=  60*20: ## 20 min
+        print("Wait time will be updated again at approximately "+str(starttime - dt.timedelta(seconds = 60*5))) 
+        time.sleep(waittime-60*5) ## check 5 minutes before end of waittime 
+        wait_to_start(starttime)
+    elif waittime>0:
+        time.sleep(waittime)
+        
+    
+
 
 if __name__ == "__main__":
     
     today = get_current_time_from_Streams()
-#    starttime = dt.datetime(2017, 8, 30, 10, 44, 0)
+    starttime = dt.datetime(2017, 9, 21, 17, 53, 0)
 #    stoptime = dt.datetime(2017, 8, 30, 10, 50,0)
 
 
-    starttime = dt.datetime.combine(today.date(), dt.time(today.hour, (today.minute)))+dt.timedelta(minutes = 1)
+ #   starttime = dt.datetime.combine(today.date(), dt.time(today.hour, (today.minute)))+dt.timedelta(minutes = 1)
 #    starttime = dt.datetime.combine(dt.datetime.today().date(), dt.time(dt.datetime.today().hour+1, 0, 0))
-    stoptime = starttime +dt.timedelta(minutes = 6)
+    stoptime = starttime +dt.timedelta(minutes = 2)
     scenetime = dt.timedelta(minutes = 2)
     buffertime = 30 #seconds between runs
 #    runtime = 30*60*60*2 #30fps, two hour increments
@@ -169,16 +198,10 @@ if __name__ == "__main__":
     
     print("Start time: " + str(starttime))
     print("Stop time: "+ str(stoptime))
-    #update current time
-    today = get_current_time_from_Streams()
-    #Check how far we are from start
-    waittime = (starttime-today).total_seconds()
-    if waittime>0:
-        if waittime > 60:
-            print("Waiting "+str(waittime/60)+" min to start")
-        else: print("Waiting "+str(waittime)+" sec to start")
-        time.sleep(waittime)
-        
+    
+    #### Wait to start
+    wait_to_start(starttime)
+
 #    ##### Loop continuously    
 #    while starttime < dt.datetime.today() < stoptime:
 #        hScene = recordScene(vidDevList)
@@ -189,7 +212,7 @@ if __name__ == "__main__":
     ### For sub-minute runs, this will jump the gun. (if, eg, the run starts at 15:00:00 and ends at 15:00:34, this check will show that current time rounded to a minute still equals 15:00:00 and it restarts)
     current = get_current_time_from_Streams()
 #    print("entering loop", current)
-    print("Preparing to record...")
+    print("\nPreparing to record at "+str(current))
     while starttime <= current <= stoptime:
 #        print(current, dt.datetime.today())
         now = dt.datetime.combine(current, dt.time(current.hour, current.minute))

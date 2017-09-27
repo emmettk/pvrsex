@@ -44,7 +44,7 @@ def groupDevices():
 
     # Select all the video devices found above.
     sdErr = sSelectDevice(vidDevList[0], 1)
-    for i in range(1, len(vidDevList)):h
+    for i in range(1, len(vidDevList)):
         sdErr = sSelectDevice(vidDevList[i], 0)
 
     # print all video devices selected
@@ -84,7 +84,7 @@ def getActiveScene():
     		hScene = sFindNextScene()
     return hActiveScene
 
-def exportScene(vidDevList, exportPath, fileType = "TIFF", nReduceFactor = 3, nReduceDict = {}):
+def exportScene(vidDevList, exportPath, fileType = "TIFF", nReduceFactor = 1, nReduceDict = {}, nMaxFrames = False):
     """
     Adapted from Levi's code and example code
     Exports current scene as TIFF files to location given by exportPath
@@ -103,7 +103,11 @@ def exportScene(vidDevList, exportPath, fileType = "TIFF", nReduceFactor = 3, nR
     for device in vidDevList:
         if sGetName(device) in nReduceDict.keys():
             nReduceFactor = nReduceDict[sGetName(device)]
-        print("Exporting every " + str(nReduceFactor)+"th frame")
+        if nReduceFactor == 1: counter = "st"
+        elif nReduceFactor == 2: counter = "nd"
+        elif nReduceFactor == 3: counter = "rd"
+        else: counter = "st"
+        print("Exporting every " + str(nReduceFactor)+counter+" frames")
 #        exportOneDevice(device, nReduceFactor, exportPath, fileType, expMovieName, expSceneName, hExport)
         expDevName = sGetName(device)
         nNumImagesRecorded = sGetNumRecordedFrames(0, getActiveScene(), device)
@@ -112,13 +116,22 @@ def exportScene(vidDevList, exportPath, fileType = "TIFF", nReduceFactor = 3, nR
         ## Set device viewer selection to empty for first image
         ## Causes the first frame to be saved, which should always be the case anyway
         sSetDeviceViewerSelection(device, 0, 0, 0)
-        for nImageIndex in xrange(nNumImagesRecorded):
+        nFramesToExport = nNumImagesRecorded
+        if nMaxFrames:
+            nFramesToExport = nMaxFrames
+        print("Maximum frames to export: " + str(nMaxFrames))
+        for nImageIndex in range(nFramesToExport):
             if fmod(nImageIndex, nReduceFactor) == 0:
                 imgsaved +=1
                 ### Keep current selection
                 sSetDeviceViewerSelection(device, nImageIndex, nImageIndex, 1)
         print("Frames saved after mod "+str(nReduceFactor)+": "+ str(imgsaved))  
-        expFName = exportPath + expMovieName + '_' + expSceneName + '_' + expDevName + '_'
+        if not os.path.exists(exportPath + "\\"+expDevName+"\\"):
+            try:
+                os.mkdir(exportPath + "\\"+expDevName+"\\")
+            except:
+                print("UNABLE TO MAKE DIRECTORY AT EXPORT PATH: "+exportPath)
+        expFName = exportPath + "\\"+expDevName+"\\" + expMovieName + '_' + expSceneName + '_' + expDevName + '_'
         print(expFName)
         eErr = sExport([device], hExport, expFName, xmVIEWER_SELECTION, exportFlags)
     print('End Export: ' + sGetTimeString(sGetCurrentTime()))
@@ -172,20 +185,21 @@ def addExportDir(exportPath, inputok = True):
         print("Export directory successfully chosen to be "+exportPath)
         return True
             
-def main(exportPath, nReduceDict):
+def main(exportPath, nReduceDict = {}, nMaxFrames = False):
     print("Running video export test script.")
     if addExportDir(exportPath, inputok = False):
         vidDevList = groupDevices()
         print("Devices identified and grouped")
         getActive()
 #        print("Exporting every "+str(nReduceFactor)+"th frame")
-        exportScene(vidDevList, exportPath, fileType = "TIFF", nReduceDict = nReduceDict)
+        exportScene(vidDevList, exportPath, fileType = "TIFF", nReduceDict = nReduceDict, nMaxFrames = nMaxFrames)
 
 if __name__ == "__main__":
-    exportPath = "C:\\StreamsExportTest2\\ReducedVideoTest10\\"
+#    exportPath = "C:\\StreamsExportTest2\\ReducedVideoTest10\\"
+    exportPath = "E:\\RSEX17_TIFF\\0918"
     nReduceDict = {"Tower_16mm": 100, "Pier_9mm": 200}
 #    nReduceFactor = 300
-    main(exportPath, nReduceDict = nReduceDict)
+    main(exportPath, nReduceDict = {}, nMaxFrames = 1000)
     
     
     
