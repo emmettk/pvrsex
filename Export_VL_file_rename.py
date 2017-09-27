@@ -13,9 +13,9 @@ import datetime as dt
 import re
 
 
-date = dt.date(2017, 9, 19)
+date = dt.date(2017, 9, 26)
 
-path = r"E:/RSEX17/"+dt.datetime.strftime(date, "%m%d")
+path = r"D:/RSEX17/"+dt.datetime.strftime(date, "%m%d")
 
 files = os.listdir(path)
 
