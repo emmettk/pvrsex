@@ -56,8 +56,8 @@ if __name__ == "__main__":
     
 #    run = r"20170926_1000_towerEO_pierEO/"
 #    run = r"20170926_1100_pierIR_pierEO/"
-    run = r"20170926_1200_towerIR_pierIR/"
-#    run = r"20170926_1300_towerIR_towerEO/"
+#    run = r"20170926_1200_towerIR_pierIR/"
+    run = r"20170926_1300_towerIR_towerEO/"
     
     path = r"D:/RSEX17_TIFF/0926/"+run+camera
     
