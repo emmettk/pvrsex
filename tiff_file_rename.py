@@ -51,13 +51,13 @@ if __name__ == "__main__":
     print("Timestamps appended are in the format: HHMMSSmmm (miliseconds: 02.123sec = 02123)")
 #    camera = "tower_EO_12mm"
 #    camera = "pier_EO_08mm"
-#    camera = "tower_IR_16mm"
-    camera = "pier_IR_09mm"
+    camera = "tower_IR_16mm"
+#    camera = "pier_IR_09mm"
     
 #    run = r"20170926_1000_towerEO_pierEO/"
 #    run = r"20170926_1100_pierIR_pierEO/"
-#    run = r"20170926_1200_towerIR_pierIR/"
-    run = r"20170926_1300_towerIR_towerEO/"
+    run = r"20170926_1200_towerIR_pierIR/"
+#    run = r"20170926_1300_towerIR_towerEO/"
     
     path = r"D:/RSEX17_TIFF/0926/"+run+camera
     
