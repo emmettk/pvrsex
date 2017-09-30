@@ -13,7 +13,7 @@ import datetime as dt
 import re
 
 
-date = dt.date(2017, 9, 27)
+date = dt.date(2017, 9, 28)
 
 path = r"D:/RSEX17/"+dt.datetime.strftime(date, "%m%d")
 
