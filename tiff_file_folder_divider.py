@@ -11,6 +11,9 @@ import os
 import math
 
 def divide_tiffs(path, max_per_folder = 10000):
+    """
+    Divides all tiffs in path into subfolders with up to max_per_folder files per subfolder
+    """
     tiffs = [file for file in os.listdir(path) if ".tif" in file]
     num_sub_dir = math.ceil(len(tiffs)/max_per_folder)
     print("Dividing", len(tiffs), "tiffs into", num_sub_dir, "directories")
@@ -25,7 +28,19 @@ def divide_tiffs(path, max_per_folder = 10000):
         print("Directory", "tiffs_pt"+str(i), "populated")
 
 
-
+def unpack_folders(path):
+    """
+    Undoes divide_tiffs by unpacking all files in subfolders into the main folder
+    """
+    for folder in [f for f in os.listdir(path) if "." not in f]:
+        print("unpacking", folder)
+        for file in os.listdir(path+"/"+folder):
+            os.rename(path+"/"+folder+"/"+file, path+"/"+file)
+        print("deleting empty folder", folder)
+        os.rmdir(path+"/"+folder)
+        
+        
+        
 if __name__ == "__main__":
 #    camera = "tower_EO_12mm"
 #    camera = "pier_EO_08mm"
@@ -39,6 +54,8 @@ if __name__ == "__main__":
 #    
     path = r"D:/RSEX17_TIFF/0926/"+run+camera
     
-#    path = r"D:\RSEX17_TIFF\0926\20170926_1300_towerIR_towerEO\tower_IR_16mm"
-    divide_tiffs(path, max_per_folder = 20*10**3)
-    print("Tiffs divided")
+#    divide_tiffs(path, max_per_folder = 20*10**3)
+#    print("Tiffs divided")
+    
+    unpack_folders(path)
+    
