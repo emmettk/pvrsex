@@ -17,6 +17,7 @@ date = dt.date(2017, 10, 3)
 
 path = r"F:/RSEX17/"+dt.datetime.strftime(date, "%m%d")
 
+
 files = os.listdir(path)
 
 files_to_rename = [file for file in files if "Streams7_Recording" in file]
