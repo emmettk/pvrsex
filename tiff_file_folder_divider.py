@@ -39,23 +39,50 @@ def unpack_folders(path):
         print("deleting empty folder", folder)
         os.rmdir(path+"/"+folder)
         
+def pull_nth_tiff(path, n):
+    """
+    Pulls every nth tiff into a separate folder
+    Designed for reading into DaVis
+    Run 'unpack folders' after to undo this action
+    """
+    tiffs = [file for file in os.listdir(path) if '.tif' in file.lower()]
+    print(len(tiffs), "tiffs in ", path)
+    os.mkdir(path+r"\every_"+str(n)+"th_tiff")
+    for tiff in tiffs[0::n]:
+        os.rename(path+r"\\"+tiff, path+r"\every_"+str(n)+"th_tiff\\"+tiff)
+    print("Every", str(n)+"th tiff put in ", path+r"\every_"+str(n)+"th_tiff")
+    print("Folder contains ", len(os.listdir(path+r"\every_"+str(n)+"th_tiff")), "files")
         
         
 if __name__ == "__main__":
-#    camera = "tower_EO_12mm"
+    
+    ##1 hz
+#    n = 15 ##pier EO
+#    n = 30 ##tower IR / pier IR
+    n = 5 ## tower EO
+    
+    camera = "tower_EO_12mm"
 #    camera = "pier_EO_08mm"
 #    camera = "tower_IR_16mm"
-    camera = "pier_IR_09mm"
+#    camera = "pier_IR_09mm"
     
 #    run = r"20170926_1000_towerEO_pierEO/"
 #    run = r"20170926_1100_pierIR_pierEO/"
-    run = r"20170926_1200_towerIR_pierIR/"
+#    run = r"20170926_1200_towerIR_pierIR/"
 #    run = r"20170926_1300_towerIR_towerEO/"
 #    
-    path = r"D:/RSEX17_TIFF/0926/"+run+camera
+#    path = r"D:/RSEX17_TIFF/0926/"+run+camera
+    
+#    path = r'D:/RSEX17_TIFF/1005/201710051000/pier_EO_08mm'
+    
+    path = r"D:/RSEX17_TIFF/1013/201710131200/"+camera
     
 #    divide_tiffs(path, max_per_folder = 20*10**3)
 #    print("Tiffs divided")
     
-    unpack_folders(path)
+#    unpack_folders(path)
+    pull_nth_tiff(path, n)
+    
+#    path = r'D:/RSEX17_TIFF/1005/201710051000/tower_EO_12mm'
+#    unpack_folders(path)
     
