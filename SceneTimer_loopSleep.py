@@ -138,7 +138,7 @@ def make_starttime_list(starttime, stoptime, scenetime, pausetime = dt.timedelta
     Accepts datetimes and time delta for scene time
     """
     startlist = [starttime]
-    while startlist[-1]+scenetime < stoptime:
+    while startlist[-1]+scenetime+pausetime < stoptime:
         startlist.append(startlist[-1]+scenetime+pausetime)
     return startlist
 
@@ -197,8 +197,8 @@ if __name__ == "__main__":
     starttime = dt.datetime(2017, 10, 16, 16, 0, 0)
     stoptime = starttime +dt.timedelta(hours = 2, minutes = 0)
     scenetime = dt.timedelta(hours = 0, minutes = 10)
-    buffertime = 0 #seconds between runs
     pausetime = dt.timedelta(minutes = 20)
+    buffertime = 0 #seconds between runs
 
 ### Other variables to edit for debugging     
     today = get_current_time_from_Streams()
@@ -206,7 +206,6 @@ if __name__ == "__main__":
 #    starttime = dt.datetime.combine(today.date(), dt.time(today.hour, (today.minute)))+dt.timedelta(minutes = 1)
 #    starttime = dt.datetime.combine(dt.datetime.today().date(), dt.time(dt.datetime.today().hour+1, 0, 0))
 #    buffertime = 30 #seconds between runs
-
 
     runtime = compute_runtime(scenetime, buffertime)
     startlist = make_starttime_list(starttime, stoptime, scenetime, pausetime)
