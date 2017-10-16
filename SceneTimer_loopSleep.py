@@ -132,14 +132,14 @@ def compute_runtime(length, buffer):
     """
     return (length.total_seconds() - buffer)*1000
 
-def make_starttime_list(starttime, stoptime, scenetime):
+def make_starttime_list(starttime, stoptime, scenetime, pausetime = dt.timedelta(minutes = 0)):
     """
     Return a list of start times using the first start time, stop time, and scene time
     Accepts datetimes and time delta for scene time
     """
     startlist = [starttime]
     while startlist[-1]+scenetime < stoptime:
-        startlist.append(startlist[-1]+scenetime)
+        startlist.append(startlist[-1]+scenetime+pausetime)
     return startlist
 
 def get_current_time_from_Streams():
@@ -175,7 +175,6 @@ def wait_to_start(starttime):
         sleep_loop(waittime-60*5) ## check 5 minutes before end of waittime 
         wait_to_start(starttime)
     elif waittime>0:
-#        time.sleep(waittime)
         sleep_loop(waittime)
         
 def sleep_loop(waittime, increment = 5):
@@ -183,7 +182,7 @@ def sleep_loop(waittime, increment = 5):
     waittime - time to pause total
     increments to pause for each time - script can be broken in Streams with this frequency
     """
-    for pause in range(0, math.floor(waittime/increment)):
+    for pause in range(0, int(math.floor(waittime/increment))):
 #        print(pause, pause*increment, dt.datetime.today())
         time.sleep(increment)
 #    print(pause, pause*(increment+1), dt.datetime.today())
@@ -195,18 +194,19 @@ def sleep_loop(waittime, increment = 5):
 if __name__ == "__main__":
     
     today = get_current_time_from_Streams()
-    starttime = dt.datetime(2017, 9, 21, 17, 53, 0)
+    starttime = dt.datetime(2017, 10, 17, 8, 0, 0)
 #    stoptime = dt.datetime(2017, 8, 30, 10, 50,0)
 
 
  #   starttime = dt.datetime.combine(today.date(), dt.time(today.hour, (today.minute)))+dt.timedelta(minutes = 1)
 #    starttime = dt.datetime.combine(dt.datetime.today().date(), dt.time(dt.datetime.today().hour+1, 0, 0))
-    stoptime = starttime +dt.timedelta(minutes = 2)
-    scenetime = dt.timedelta(minutes = 2)
-    buffertime = 30 #seconds between runs
+    stoptime = starttime +dt.timedelta(hours = 8, minutes = 0)
+    scenetime = dt.timedelta(hours = 0, minutes = 10)
+    buffertime = 0
+#    buffertime = 30 #seconds between runs
 #    runtime = 30*60*60*2 #30fps, two hour increments
     runtime = compute_runtime(scenetime, buffertime)
-    startlist = make_starttime_list(starttime, stoptime, scenetime)
+    startlist = make_starttime_list(starttime, stoptime, scenetime, pausetime = dt.timedelta(minutes = 20))
     print("Start time list: " + str(startlist))
     vidDevList = groupDevices()
     setStopCondition(vidDevList, runtime, trigger = "ms")    
