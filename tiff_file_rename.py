@@ -15,7 +15,7 @@ import datetime as dt
 import re
 from pytz import timezone
 
-def rename(files_to_rename, runlength, camera, timestamp = False):
+def rename_tiffs(files_to_rename, runlength, camera, timestamp = False):
     """
     if timestamp = True, takes a file with a name like "'Movie1_Streams7_Recording_2017-09-26_10_55_11_tower_EO_12mm_00000_09.26.2017_14.00.02.591.tif'
     and renames them to EST: "201709261000_tower_EO_12mm_00000_100002591.tif"
@@ -27,7 +27,7 @@ def rename(files_to_rename, runlength, camera, timestamp = False):
         enddate = dt.datetime.strptime(re.findall("(?:Streams7_Recording_)([0-9]{4}-[0-9]{2}-[0-9]{2})", file)[0], "%Y-%m-%d")
         endtime = dt.datetime.strptime(re.findall("(?:Streams7_Recording_[0-9]{4}-[0-9]{2}-[0-9]{2}_)([0-9]{2}_[0-9]{2}_[0-9]{2})", file)[0], "%H_%M_%S")
 #        filenumber = re.findall("(?:_)([0-9]+)(?:\.TIF)", file)[0]
-        search = "(?:_"+camera+"_)([0-9]{5})(?:_|\.TIF|\.tif)"
+        search = "(?:_"+camera+"_)([0-9]{1,10})(?:_|\.TIF|\.tif)"
 #        print(file, search)
         filenumber = re.findall(search, file)[0]
 #        print(file, filenumber)
@@ -45,6 +45,20 @@ def rename(files_to_rename, runlength, camera, timestamp = False):
         print("Renamining", file, "to", filename)
         os.rename(path+"/"+file, path+"/"+filename)
 
+def rename_utc(files_to_rename, runlength, camera):
+    """
+    Rename UTC file from eg 'Movie1_Streams7_Recording_2017-09-26_10_55_11_tower_EO_12mm.utc' to '201709261000_tower_EO_12mm.utc'
+    """
+    for file in files_to_rename:
+        enddate = dt.datetime.strptime(re.findall("(?:Streams7_Recording_)([0-9]{4}-[0-9]{2}-[0-9]{2})", file)[0], "%Y-%m-%d")
+        endtime = dt.datetime.strptime(re.findall("(?:Streams7_Recording_[0-9]{4}-[0-9]{2}-[0-9]{2}_)([0-9]{2}_[0-9]{2}_[0-9]{2})", file)[0], "%H_%M_%S")
+        end = dt.datetime.combine(enddate.date(), endtime.time())
+        start = end - runlength
+        filename = dt.datetime.strftime(start, "%Y%m%d%H%M")+'_'+camera+'.utc'       
+        if ".utc" in file:
+            print("Renamining", file, "to", filename)
+            os.rename(path+"/"+file, path+"/"+filename)
+        else: print("Error:", file, "is not a .utc file")
 
 
 if __name__ == "__main__":
@@ -56,10 +70,15 @@ if __name__ == "__main__":
     
 #    run = r"20170926_1000_towerEO_pierEO/"
 #    run = r"20170926_1100_pierIR_pierEO/"
-    run = r"20170926_1200_towerIR_pierIR/"
+#    run = r"20170926_1200_towerIR_pierIR/"
 #    run = r"20170926_1300_towerIR_towerEO/"
+#    path = r"D:/RSEX17_TIFF/0926/"+run+camera
     
-    path = r"D:/RSEX17_TIFF/0926/"+run+camera
+    run = r"201710131200/"
+    
+    
+    path = r"D:/RSEX17_TIFF/1013/"+run+camera
+    
     
 #    date = dt.date(2017, 9, 19)
 #    path = r"E:/RSEX17_TIFF/"+dt.datetime.strftime(date, "%m%d")+r"/"+camera
@@ -71,12 +90,13 @@ if __name__ == "__main__":
     files = os.listdir(path)
     
     files_to_rename = [file for file in files if "Streams7_Recording" in file]
-    tiffs = [file for file in files_to_rename if ".tif" in file]
+    tiffs = [file for file in files_to_rename if ".TIF" in file]
     
     ## Assumes 2 hr nominal runs with 30 sec spacers
 #    runlength = dt.timedelta(hours = 1, minutes= 59, seconds = 30)
-    runlength = dt.timedelta(minutes = 55)
-    rename(tiffs, runlength, camera, timestamp = True)
-    
+    runlength = dt.timedelta(minutes = 10)
+    print(path)
+    rename_tiffs(tiffs, runlength, camera, timestamp = True)
+    rename_utc([file for file in files_to_rename if ".utc" in file], runlength, camera)
     
     
