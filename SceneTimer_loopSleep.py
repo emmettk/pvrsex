@@ -192,21 +192,24 @@ def sleep_loop(waittime, increment = 5):
 
 
 if __name__ == "__main__":
-    
-    today = get_current_time_from_Streams()
-    starttime = dt.datetime(2017, 10, 17, 8, 0, 0)
-#    stoptime = dt.datetime(2017, 8, 30, 10, 50,0)
 
-
- #   starttime = dt.datetime.combine(today.date(), dt.time(today.hour, (today.minute)))+dt.timedelta(minutes = 1)
-#    starttime = dt.datetime.combine(dt.datetime.today().date(), dt.time(dt.datetime.today().hour+1, 0, 0))
-    stoptime = starttime +dt.timedelta(hours = 8, minutes = 0)
+### Main variables to edit
+    starttime = dt.datetime(2017, 10, 16, 16, 0, 0)
+    stoptime = starttime +dt.timedelta(hours = 2, minutes = 0)
     scenetime = dt.timedelta(hours = 0, minutes = 10)
-    buffertime = 0
+    buffertime = 0 #seconds between runs
+    pausetime = dt.timedelta(minutes = 20)
+
+### Other variables to edit for debugging     
+    today = get_current_time_from_Streams()
+#    stoptime = dt.datetime(2017, 8, 30, 10, 50,0)
+#    starttime = dt.datetime.combine(today.date(), dt.time(today.hour, (today.minute)))+dt.timedelta(minutes = 1)
+#    starttime = dt.datetime.combine(dt.datetime.today().date(), dt.time(dt.datetime.today().hour+1, 0, 0))
 #    buffertime = 30 #seconds between runs
-#    runtime = 30*60*60*2 #30fps, two hour increments
+
+
     runtime = compute_runtime(scenetime, buffertime)
-    startlist = make_starttime_list(starttime, stoptime, scenetime, pausetime = dt.timedelta(minutes = 20))
+    startlist = make_starttime_list(starttime, stoptime, scenetime, pausetime)
     print("Start time list: " + str(startlist))
     vidDevList = groupDevices()
     setStopCondition(vidDevList, runtime, trigger = "ms")    
@@ -216,12 +219,6 @@ if __name__ == "__main__":
     
     #### Wait to start
     wait_to_start(starttime)
-
-#    ##### Loop continuously    
-#    while starttime < dt.datetime.today() < stoptime:
-#        hScene = recordScene(vidDevList)
-#        nameScene(hScene, vidDevList)
-#        print("Scene recorded at"+str(dt.datetime.today()))
 
     ### Start at specified times
     ### For sub-minute runs, this will jump the gun. (if, eg, the run starts at 15:00:00 and ends at 15:00:34, this check will show that current time rounded to a minute still equals 15:00:00 and it restarts)
@@ -237,4 +234,4 @@ if __name__ == "__main__":
             nameScene(hScene, vidDevList)
             print("Scene recording complete at "+str(get_current_time_from_Streams()))
         current = get_current_time_from_Streams()
-#        
+       
