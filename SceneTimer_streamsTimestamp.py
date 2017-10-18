@@ -180,15 +180,17 @@ def wait_to_start(starttime):
 if __name__ == "__main__":
     
     today = get_current_time_from_Streams()
-    starttime = dt.datetime(2017, 9, 21, 17, 53, 0)
+    starttime = dt.datetime(2017, 9, 30, 14, 0, 0)
 #    stoptime = dt.datetime(2017, 8, 30, 10, 50,0)
 
 
  #   starttime = dt.datetime.combine(today.date(), dt.time(today.hour, (today.minute)))+dt.timedelta(minutes = 1)
 #    starttime = dt.datetime.combine(dt.datetime.today().date(), dt.time(dt.datetime.today().hour+1, 0, 0))
-    stoptime = starttime +dt.timedelta(minutes = 2)
-    scenetime = dt.timedelta(minutes = 2)
+    stoptime = starttime +dt.timedelta(hours = 4)
+    scenetime = dt.timedelta(hours = 2)
     buffertime = 30 #seconds between runs
+ #   buffertime = 5*60 #5 minutes between runs
+#    buffertime = 0
 #    runtime = 30*60*60*2 #30fps, two hour increments
     runtime = compute_runtime(scenetime, buffertime)
     startlist = make_starttime_list(starttime, stoptime, scenetime)
@@ -213,8 +215,11 @@ if __name__ == "__main__":
     current = get_current_time_from_Streams()
 #    print("entering loop", current)
     print("\nPreparing to record at "+str(current))
+
     while starttime <= current <= stoptime:
 #        print(current, dt.datetime.today())
+ #       print("The current time from Streams is "+str(today))
+ #       print("The current system time is "+str(dt.datetime.today()))
         now = dt.datetime.combine(current, dt.time(current.hour, current.minute))
         if now in startlist:
             print("Scene recording triggered at " + str(get_current_time_from_Streams()))
