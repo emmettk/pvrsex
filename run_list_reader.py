@@ -100,6 +100,7 @@ def check_RAID(computer = "LaVision"):
             if len(log) == len(raid1): print("Raid 1 has same number of files")
             
 if __name__ == "__main__":
-    computer = "LaVision"
+#    computer = "LaVision"
+    computer =  "PVAquire"
     check_RAID(computer)
             
