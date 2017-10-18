@@ -10,10 +10,19 @@ and save as a csv that can be read by eg Excel
 import pandas as pd
 import os
 
-
-
-
-
+def read_runfile_csv(computer = "LaVision"):
+    """
+    Reads a runfile csv that has already been made
+    """
+    if computer == "LaVision":
+        ## LaVision pathway
+        pathout = r"C:\Users\LaVision\Dropbox\PVRSEX17\RSEX17_run_list.csv"  
+    elif computer == "PVAquire":
+        ## PVAquire pathway
+        pathout = r"C:\Users\PVAquire\Dropbox\PVRSEX17\RSEX17_run_list.csv"
+       
+    return pd.read_csv(pathout, dtype = "object")
+    
 def make_runfile_csv(computer = "LaVision"):
     """
     Make a csv from the text file listing runs
@@ -50,7 +59,7 @@ def check_RAID(computer = "LaVision"):
     computer == LaVision: Check files in RAID 0 and RAID 1
     computer == PVAquire: Check files in RAID 2 and RAID 3
     """
-    runfile1 = make_runfile_csv(computer)
+    runfile1 = read_runfile_csv(computer)
     if computer == "PVAquire":
         RAID2 = r"E:\\RSEX17\\"
         RAID3 = r"F:\\RSEX17\\"
@@ -99,7 +108,27 @@ def check_RAID(computer = "LaVision"):
             if len(log) == len(raid0): print("Raid 0 has same number of files")
             if len(log) == len(raid1): print("Raid 1 has same number of files")
             
+            
+def update_runlist(runlist, date, RAID = "RAID0"):
+    if RAID == "RAID0":
+        path = "D"
+    elif RAID == "RAID1": 
+        path = "E"
+    elif RAID == "RAID2":
+        path = "E"
+    elif RAID == "RAID3":
+        path = "F"
+    for i in runlist.loc[runlist.Date.apply(lambda x: x == date)].index:
+        if "2017"+runlist.loc[i, "Date"]+runlist.loc[i, "Start"]+".vl" in os.listdir(path+":/RSEX17/"+date):
+            print("2017"+runlist.loc[i, "Date"]+runlist.loc[i, "Start"]+".vl has been downloaded and logged in csv")
+            runlist.loc[i, RAID] = "y"
+                
 if __name__ == "__main__":
     computer = "LaVision"
-    check_RAID(computer)
+#    check_RAID(computer)
+#    runlist = make_runfile_csv(computer)
+    runlist = read_runfile_csv(computer)
+#    update_runlist(runlist, "1017")
+#    update_runlist(runlist, "1018")
+#    runlist.to_csv(r"C:\Users\LaVision\Dropbox\PVRSEX17\RSEX17_run_list.csv", index = False)
             
