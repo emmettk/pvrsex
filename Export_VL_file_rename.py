@@ -14,7 +14,7 @@ import re
 
 
 
-date = dt.date(2017, 10, 18)
+date = dt.date(2017, 10, 19)
 
 path = r"E:/RSEX17/"+dt.datetime.strftime(date, "%m%d")
 
