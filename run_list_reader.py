@@ -133,12 +133,12 @@ def update_runlist(runlist, date, RAID = "RAID0"):
             runlist.loc[i, RAID] = "y"
                 
 if __name__ == "__main__":
-#    computer =  "PVAquire"
-    computer = "LaVision"
-    check_RAID(computer)
+    computer =  "PVAquire"
+#    computer = "LaVision"
+#    check_RAID(computer)
 #    runlist = make_runfile_csv(computer)
 #    runlist = deconvert_from_excel(read_runfile_csv(computer))
-#    update_runlist(runlist, "1019")
-#    update_runlist(runlist, "1018")
-#    runlist.to_csv(r"C:\Users\LaVision\Dropbox\PVRSEX17\RSEX17_run_list.csv", index = False)
+#    update_runlist(runlist, "1019", RAID = "RAID2")
+#    update_runlist(runlist, "1018", RAID = "RAID2")
+    runlist.to_csv("C:\Users\\"+Computer+"\Dropbox\PVRSEX17\RSEX17_run_list.csv", index = False)
             
