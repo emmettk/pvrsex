@@ -140,5 +140,5 @@ if __name__ == "__main__":
 #    runlist = deconvert_from_excel(read_runfile_csv(computer))
 #    update_runlist(runlist, "1019", RAID = "RAID2")
 #    update_runlist(runlist, "1018", RAID = "RAID2")
-    runlist.to_csv("C:\Users\\"+Computer+"\Dropbox\PVRSEX17\RSEX17_run_list.csv", index = False)
+    runlist.to_csv(r"C:\Users\\"+computer+r"\Dropbox\PVRSEX17\RSEX17_run_list.csv", index = False)
             
