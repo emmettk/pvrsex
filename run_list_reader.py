@@ -134,6 +134,8 @@ def update_runlist(runlist, date, RAID = "RAID0"):
                 
 if __name__ == "__main__":
     computer = "LaVision"
+    computer =  "PVAquire"
+#    computer = "LaVision"
     check_RAID(computer)
 #    runlist = make_runfile_csv(computer)
 #    runlist = deconvert_from_excel(read_runfile_csv(computer))
