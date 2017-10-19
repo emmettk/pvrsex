@@ -22,6 +22,14 @@ def read_runfile_csv(computer = "LaVision"):
         pathout = r"C:\Users\PVAquire\Dropbox\PVRSEX17\RSEX17_run_list.csv"
        
     return pd.read_csv(pathout, dtype = "object")
+
+def deconvert_from_excel(runfile):
+    """
+    Adds back the 0 padding to dates and times
+    """
+    runfile["Date"] = runfile.Date.apply(lambda x: x.zfill(4))
+    runfile["Start"] = runfile.Start.apply(lambda x: x.zfill(4))
+    return runfile
     
 def make_runfile_csv(computer = "LaVision"):
     """
@@ -59,7 +67,8 @@ def check_RAID(computer = "LaVision"):
     computer == LaVision: Check files in RAID 0 and RAID 1
     computer == PVAquire: Check files in RAID 2 and RAID 3
     """
-    runfile1 = read_runfile_csv(computer)
+    runfile = read_runfile_csv(computer)
+    runfile1 = deconvert_from_excel(runfile)
     if computer == "PVAquire":
         RAID2 = r"E:\\RSEX17\\"
         RAID3 = r"F:\\RSEX17\\"
@@ -99,7 +108,7 @@ def check_RAID(computer = "LaVision"):
             except FileNotFoundError:
                 raid0 = []
                 print("RAID0: None")
-            try:
+            try: 
                 raid1 = os.listdir(RAID1+date)
                 print("RAID1", raid1)
             except FileNotFoundError:
@@ -125,10 +134,10 @@ def update_runlist(runlist, date, RAID = "RAID0"):
                 
 if __name__ == "__main__":
     computer = "LaVision"
-#    check_RAID(computer)
+    check_RAID(computer)
 #    runlist = make_runfile_csv(computer)
-    runlist = read_runfile_csv(computer)
-#    update_runlist(runlist, "1017")
+#    runlist = deconvert_from_excel(read_runfile_csv(computer))
+#    update_runlist(runlist, "1019")
 #    update_runlist(runlist, "1018")
 #    runlist.to_csv(r"C:\Users\LaVision\Dropbox\PVRSEX17\RSEX17_run_list.csv", index = False)
             
