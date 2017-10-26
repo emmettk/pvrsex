@@ -14,7 +14,7 @@ import re
 
 
 
-date = dt.date(2017, 10, 19)
+date = dt.date(2017, 10, 25)
 
 path = r"E:/RSEX17/"+dt.datetime.strftime(date, "%m%d")
 
@@ -26,7 +26,7 @@ files_to_rename = [file for file in files if "Streams7_Recording" in file]
 
 #runlength = dt.timedelta(hours = 0, minutes= 59, seconds = 30)
 
-runlength = dt.timedelta(minutes = 10)
+runlength = dt.timedelta(minutes = 38)
 
 
 for file in files_to_rename:
