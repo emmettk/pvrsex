@@ -101,19 +101,19 @@ def check_RAID(computer = "LaVision"):
         for date in runfile1.Date.unique():
             print(date)
             log = runfile1.loc[runfile1.Date.apply(lambda x: x == date)][["Date", "Start"]+[col for col in runfile1.columns if "RAID" in col]]
-            print(log)
+#            print(log)
             try:
                 raid0 = os.listdir(RAID0+date)
-                print("RAID0",raid0)
+#                print("RAID0",raid0)
             except FileNotFoundError:
                 raid0 = []
-                print("RAID0: None")
+#                print("RAID0: None")
             try: 
                 raid1 = os.listdir(RAID1+date)
-                print("RAID1", raid1)
+#                print("RAID1", raid1)
             except FileNotFoundError:
                 raid1 = []
-                print("RAID1: None")    
+#                print("RAID1: None")    
             if len(log) == len(raid0): print("Raid 0 has same number of files")
             if len(log) == len(raid1): print("Raid 1 has same number of files")
             
@@ -135,9 +135,8 @@ def update_runlist(runlist, date, RAID = "RAID0"):
 if __name__ == "__main__":
 #    computer =  "PVAquire"
     computer = "LaVision"
-#    check_RAID(computer)
-    runlist = deconvert_from_excel(read_runfile_csv(computer))
-    update_runlist(runlist, "1019", RAID = "RAID0")
+#    runlist = deconvert_from_excel(read_runfile_csv(computer))
+#    update_runlist(runlist, "1024", RAID = "RAID0")
 #    update_runlist(runlist, "1018", RAID = "RAID2")
-    runlist.to_csv(r"C:\Users\\"+computer+r"\Dropbox\PVRSEX17\RSEX17_run_list.csv", index = False)
-            
+#    runlist.to_csv(r"C:\Users\\"+computer+r"\Dropbox\PVRSEX17\RSEX17_run_list.csv", index = False)
+    check_RAID(computer)
