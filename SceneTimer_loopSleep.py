@@ -194,11 +194,11 @@ def sleep_loop(waittime, increment = 5):
 if __name__ == "__main__":
 
 ### Main variables to edit
-    starttime = dt.datetime(2017, 10, 16, 16, 0, 0)
-    stoptime = starttime +dt.timedelta(hours = 2, minutes = 0)
-    scenetime = dt.timedelta(hours = 0, minutes = 10)
-    pausetime = dt.timedelta(minutes = 20)
-    buffertime = 0 #seconds between runs
+    starttime = dt.datetime(2018, 8, 16, 15, 15, 0)
+    stoptime = starttime +dt.timedelta(hours = 0, minutes = 10)
+    scenetime = dt.timedelta(hours = 0, minutes = 2)
+    pausetime = dt.timedelta(minutes = 0)
+    buffertime = 30 #seconds between runs
 
 ### Other variables to edit for debugging     
     today = get_current_time_from_Streams()
