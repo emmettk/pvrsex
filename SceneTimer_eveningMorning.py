@@ -14,6 +14,7 @@ This may subsume the 30 min and 5 min checks.
 
 Allow for both evening and morning run times to be set.
 
+Version 20 Sep 2018 - No longer calls them "evening" and "morning" runs
 """
 
 import SPython
@@ -231,24 +232,24 @@ def run(starttime, stoptime, scenetime, pausetime = dt.timedelta(minutes = 0), b
 
 if __name__ == "__main__":
 
-### Evening Run
+### Run 1
     starttime1 = dt.datetime(2018, 9, 20, 8, 10, 0)
     stoptime1 = starttime1 +dt.timedelta(hours = 1, minutes = 50)
     scenetime1 = dt.timedelta(hours = 1, minutes = 50)
     pausetime1 = dt.timedelta(minutes = 0)
     buffertime1 = 30 #seconds between runs
 
-### Morning Run
+### Run 2
     starttime2 = dt.datetime(2018, 9, 20, 9, 0, 0)
     stoptime2 = starttime2 +dt.timedelta(hours = 8, minutes = 0)
     scenetime2 = dt.timedelta(hours = 2, minutes = 0)
     pausetime2 = dt.timedelta(minutes = 0)
     buffertime2 = 30 #seconds between runs
 
-### Do the evening run 
+### Do the first run 
 #    run(starttime1, stoptime1, scenetime1, pausetime1, buffertime1)
 
-### Do the morning run 
+### Do the second run 
     run(starttime2, stoptime2, scenetime2, pausetime2, buffertime2)
 
 
