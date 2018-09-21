@@ -247,7 +247,7 @@ if __name__ == "__main__":
     buffertime2 = 30 #seconds between runs
 
 ### Do the first run 
-#    run(starttime1, stoptime1, scenetime1, pausetime1, buffertime1)
+    run(starttime1, stoptime1, scenetime1, pausetime1, buffertime1)
 
 ### Do the second run 
     run(starttime2, stoptime2, scenetime2, pausetime2, buffertime2)
